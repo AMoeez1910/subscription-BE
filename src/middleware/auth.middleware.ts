@@ -48,6 +48,7 @@ const authorize = async (
       success: false,
       message: "Unauthorized access",
     });
+    next(error);
   }
 };
 
