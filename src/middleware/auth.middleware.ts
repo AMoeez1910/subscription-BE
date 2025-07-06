@@ -3,7 +3,7 @@ import { JWT_SECRET } from "../config/env";
 import jwt from "jsonwebtoken";
 import User from "../models/user.model";
 
-interface CustomRequestI extends Request {
+export interface CustomRequestI extends Request {
   user?: typeof User.prototype;
 }
 

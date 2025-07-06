@@ -1,46 +1,35 @@
 import { Router, Response, Request } from "express";
+import authorize from "../middleware/auth.middleware";
+import {
+  createSubscription,
+  deleteSubscription,
+  getSubscription,
+  getSubscriptionByUser,
+  getSubscriptions,
+  getUpcomingRenewals,
+  updateSubscription,
+} from "../controllers/subscription.controller";
 
 const subscriptionRouter = Router();
 // get
-subscriptionRouter.get("/", (req: Request, res: Response) => {
-  res.send({ title: "Get all Subscriptions" });
-});
+subscriptionRouter.get("/", getSubscriptions);
 
-subscriptionRouter.get("/:id", (req: Request, res: Response) => {
-  const { id } = req.params;
-  res.send({ title: `Get Subscription with ID: ${id}` });
-});
-
-subscriptionRouter.get("/user/:userId", (req: Request, res: Response) => {
-  const { userId } = req.params;
-  res.send({ title: `Get Subscriptions for User with ID: ${userId}` });
-});
+subscriptionRouter.get("/subscription/:id", getSubscription);
 
 subscriptionRouter.get(
   "/get-upcoming-renewals",
-  (req: Request, res: Response) => {
-    res.send({ title: "Get Upcoming Renewals" });
-  }
+  authorize,
+  getUpcomingRenewals
 );
-// post
-subscriptionRouter.post("/", (req: Request, res: Response) => {
-  res.send({ title: "Create Subscription" });
-});
-// put
-subscriptionRouter.put("/:id", (req: Request, res: Response) => {
-  const { id } = req.params;
-  res.send({ title: `Update Subscription with ID: ${id}` });
-});
+subscriptionRouter.get("/user/:userId", authorize, getSubscriptionByUser);
 
-subscriptionRouter.put("/user/:userId", (req: Request, res: Response) => {
-  const { userId } = req.params;
-  res.send({ title: `Update Subscription for User with ID: ${userId}` });
-});
+// post
+subscriptionRouter.post("/", authorize, createSubscription);
+// put
+subscriptionRouter.put("/:id", authorize, updateSubscription);
+
 // delete
-subscriptionRouter.delete("/:id", (req: Request, res: Response) => {
-  const { id } = req.params;
-  res.send({ title: `Delete Subscription with ID: ${id}` });
-});
+subscriptionRouter.delete("/:id", authorize, deleteSubscription);
 // patch
 subscriptionRouter.patch("/:id", (req: Request, res: Response) => {
   const { id } = req.params;
