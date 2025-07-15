@@ -1,6 +1,7 @@
 import { Response, NextFunction } from "express";
 import Subscription from "../models/subscription.model";
 import { CustomRequestI } from "../middleware/auth.middleware";
+import dayjs from "dayjs";
 
 export const createSubscription = async (
   req: CustomRequestI,
@@ -164,7 +165,7 @@ export const getUpcomingRenewals = async (
   next: NextFunction
 ) => {
   try {
-    const date = new Date();
+    const date = dayjs();
     const upcomingRenewals = await Subscription.find({
       user: req.user?._id,
       renewalDate: { $gte: date },
